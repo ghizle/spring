@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
+<head>
+    <meta charset="utf-8">
+    <title>Liste des Categorys</title>
+</head>
+<body>
+<div layout:fragment="Mycontent">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                Liste des Categorys
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th>ID</th><th>Nom Category</th><th>Date de création</th><th colspan="2" th:if="${isAdmin}">Actions</th>
+                    </tr>
+                    <tr th:each="r:${categorys.content}">
+                        <td th:text="${r.idCategory}"></td>
+                        <td th:text="${r.nom}"></td>
+                        <td th:text="${#dates.format(r.dateCreation, 'yyyy-MM-dd')}"></td>
+                        <td><a class="btn btn-primary" th:href="@{/updateCategory(id=${r.idCategory}, page=${currentPage}, size=${size})}" th:if="${isAdmin}">Edit</a></td>
+                        <td>
+                            <a class="btn btn-danger" onclick="return confirm('Etes-vous sûr ?')"
+                               th:href="@{/categorysTemplate/delete/{id}(id=${r.idCategory}, page=${currentPage}, size=${size})}"
+                               th:method="delete" th:if="${isAdmin}">Supprimer</a>
+                        </td>
+                    </tr>
+                </table>
+                <ul class="nav nav-pills">
+                    <li th:each="page,status:${pages}">
+                        <a th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+                           th:href="@{listeCategorys(page=${status.index}, size=${size})}"
+                           th:text="${status.index+1 }"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

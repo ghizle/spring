@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
+<head>
+    <meta charset="utf-8">
+    <title>Liste des Coffees</title>
+</head>
+<body>
+<div layout:fragment="Mycontent">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                Liste des Coffees
+            </div>
+            <div class="card-body">
+                <form th:action="@{/coffees-by-categorys}" method="get">
+                    <div class="form-group">
+                        <label for="categorySelect">Sélectionner une Category:</label>
+                        <select class="form-control" id="categorySelect" name="categoryId">
+                            <option th:each="category : ${categorys}"
+                                    th:value="${category.idCategory}"
+                                    th:text="${category.nom}"
+                                    th:selected="${category.idCategory == categoryId}">
+                            </option>
+                        </select>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 20px; margin-bottom: 20px">Rechercher</button>
+                </form>
+                <table class="table table-striped">
+                    <tr>
+                        <th>ID</th><th>Nom Coffee</th><th>prix</th><th>Date de création</th><th>Date creation</th><th>Category</th><th colspan="2" th:if="${role == 'ADMIN'}">Actions</th>
+                    </tr>
+                    <tr th:each="c:${coffees}">
+                        <td th:text="${c.idCoffee}"></td>
+                        <td th:text="${c.nom}"></td>
+                        <td th:text="${c.prixCoffee}"></td>
+                        <td th:text="${#dates.format(c.dateCreation, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${c.category.nom}"></td>
+                        <td><a th:if="${role == 'ADMIN'}" class="btn btn-primary" th:href="@{/{id}(id=${c.idCoffee})}">Edit</a></td>
+                        <td>
+                            <a th:if="${role == 'ADMIN'}" class="btn btn-danger" onclick="return confirm('Etes-vous sûr ?')"
+                               th:href="@{/coffeesTemplate/delete/{id}(id=${c.idCoffee}, page=${currentPage}, size=${4})}"
+                               th:method="delete">Supprimer</a>
+                        </td>
+                    </tr>
+                </table>
+                <ul class="nav nav-pills">
+                    <li th:each="page,status:${pages}">
+                        <a th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+                           th:href="@{coffees-by-categorys(categoryId=${categoryId}, page=${status.index}, size=${size})}"
+                           th:text="${status.index+1 }"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

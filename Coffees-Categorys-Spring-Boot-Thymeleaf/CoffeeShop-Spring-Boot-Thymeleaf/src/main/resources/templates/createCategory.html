@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
+<head>
+    <meta charset="utf-8">
+    <title>Liste des Categorys</title>
+</head>
+<body>
+<div layout:fragment="Mycontent">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                Ajout de Category
+            </div>
+            <div class="card-body">
+                <div class="card-body">
+                    <form action="saveCategory" method="POST">
+                        <div class="form-group">
+                            <label class="control-label">Nom :</label>
+                            <input type="text" name="nom" class="form-control" required="required"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Date de création :</label>
+                            <input type="date" name="dateCreation" class="form-control" required="required"/>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary" style="margin-top: 20px">Ajouter</button>
+                        </div>
+                    </form>
+                </div>
+                <br/>
+                <br/>
+                <a href="listeCategorys">Liste Categorys</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
